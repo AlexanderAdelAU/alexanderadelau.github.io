@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMALLC99 – a native Small-C compiler for the TMS99105 / TMS9900</title>
+<meta name="description" content="SMALLC99 is a Small-C compiler that runs natively on a TMS99105 (TMS9900 family) single board computer, with structs, unions, multi-dimensional arrays and multi-level pointers, using a paged memory mapper and overlays.">
+<meta name="keywords" content="SMALLC99, Small-C, C compiler, TMS99105, TMS9900, TMS99000, native compiler, overlays, paged memory, retrocomputing, homebrew computer">
+<link rel="canonical" href="https://alexanderadelau.github.io/smallc99/">
+<meta property="og:title" content="SMALLC99 – a native Small-C compiler for the TMS99105 / TMS9900">
+<meta property="og:description" content="A Small-C compiler with structs, unions and multi-dimensional arrays that runs on the TMS99105 SBC itself, using paged memory and overlays.">
+<meta property="og:url" content="https://alexanderadelau.github.io/smallc99/">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "SMALLC99",
+  "description": "A Small-C compiler that runs natively on a TMS99105 (TMS9900 family) single board computer, using a paged memory mapper and overlays.",
+  "codeRepository": "https://github.com/AlexanderAdelAU/SmallC99-TMS99105-Native-C-Compiler",
+  "programmingLanguage": ["C", "TMS9900 Assembly"],
+  "runtimePlatform": "TMS99105 SBC V4",
+  "author": {"@type": "Person", "name": "AlexanderAdelAU", "url": "https://github.com/AlexanderAdelAU"}
+}
+</script>
+<style>
+  body{font:17px/1.6 Georgia,"Times New Roman",serif;color:#1d1d1b;background:#fbfaf7;margin:0}
+  main{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+  h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .5rem}
+  h2{font-size:1.3rem;margin-top:2.2rem;border-bottom:1px solid #ddd8cc;padding-bottom:.2rem}
+  a{color:#1a5a8a}
+  .lede{font-size:1.15rem;color:#3a3a36}
+  .btn{display:inline-block;background:#1a5a8a;color:#fff;text-decoration:none;padding:.55rem 1rem;border-radius:4px;font-family:system-ui,sans-serif;font-size:.95rem;margin:.6rem .4rem 0 0}
+  .btn.alt{background:#fff;color:#1a5a8a;border:1px solid #1a5a8a}
+  pre{background:#1f2328;color:#e6e6e6;padding:1rem;border-radius:4px;overflow-x:auto;font-size:.85rem;line-height:1.4}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:.9em}
+  table{border-collapse:collapse;width:100%;font-size:.95rem}
+  th,td{text-align:left;padding:.35rem .5rem;border-bottom:1px solid #e6e1d6;vertical-align:top}
+  img{max-width:100%;height:auto;display:block;margin:1rem auto}
+  nav{font-family:system-ui,sans-serif;font-size:.9rem}
+  footer{margin-top:3rem;font-size:.9rem;color:#666}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">← TMS99105 SBC projects</a></nav>
+
+<h1>SMALLC99: a native C compiler for the TMS99105</h1>
+<p class="lede">SMALLC99 is a C compiler that runs <strong>on</strong> a TMS99105 single board computer, not on a PC. It compiles C to TMS9900 assembly, which the SBC's own assembler (R99) and linker (LINK99) turn into a program you can run.</p>
+<a class="btn" href="https://github.com/AlexanderAdelAU/SmallC99-TMS99105-Native-C-Compiler">Source code on GitHub</a>
+<a class="btn alt" href="https://github.com/AlexanderAdelAU/TMS99105-SBC">The SBC hardware</a>
+
+<h2>A compile on the SBC</h2>
+<pre>[TOOLS]%SMALLC99 PTRTEST -V
+SMALLC99: compiling PTRTEST.C -> PTRTEST.A99
+SMALLC99: wrote PTRTEST.A99
+[TOOLS]%R99 PTRTEST
+[TOOLS]%LINK99 PTRTEST.R99 IOLIB99.LIB
+[TOOLS]%PTRTEST
+...
+tests: 44  passed: 44  failed: 0
+ALL POINTER TESTS PASSED</pre>
+
+<h2>What it supports</h2>
+<p>SMALLC99 descends from J. E. Hendrix's Small-C 2.2 and extends it well beyond the classic subset:</p>
+<ul>
+  <li><strong>Structures and unions</strong>: <code>.</code> and <code>-&gt;</code>, nesting, member arrays, self-referencing lists, <code>sizeof(struct tag)</code>.</li>
+  <li><strong>Multi-dimensional arrays</strong> of up to five dimensions, including arrays of pointers and arrays of structs.</li>
+  <li><strong>Multi-level pointers</strong> up to <code>int ****p</code>, with pointer arithmetic scaled by element size.</li>
+  <li><code>char</code>, <code>int</code>, <code>unsigned char</code> and <code>unsigned int</code> types.</li>
+  <li>The full C operator set, and every control statement including <code>switch</code> and <code>goto</code>.</li>
+  <li>Function pointers, recursion and a preprocessor with <code>#define</code>, <code>#include</code>, <code>#ifdef</code> and <code>#asm</code>.</li>
+  <li>Error reports with the line number and source line.</li>
+</ul>
+<p>287 runtime checks covering the core language, structs, pointers and arrays all pass on the real hardware.</p>
+
+<h2>How a big compiler fits in 64K</h2>
+<p>The TMS99105 can address only 64K, and the compiler is much larger than that. The SBC has a custom memory mapper giving 1MB of RAM in 4K pages. SMALLC99 keeps a small resident core always mapped, and swaps eight overlays through a 16K window as it works:</p>
+<img src="smallc99_memory_layout.svg" alt="SMALLC99 memory layout on the TMS99105 SBC" width="600">
+<table>
+  <tr><th>Overlay</th><th>Does</th></tr>
+  <tr><td>EXPR</td><td>Expressions, operators, calls, member access and pointer scaling</td></tr>
+  <tr><td>STMT</td><td>Control flow and local declarations</td></tr>
+  <tr><td>DECL</td><td>Global variables and their initial values</td></tr>
+  <tr><td>PREP</td><td>The preprocessor</td></tr>
+  <tr><td>DFUN</td><td>Function headers and parameters</td></tr>
+  <tr><td>CGEN</td><td>Code generation into TMS9900 assembly</td></tr>
+  <tr><td>CLI</td><td>Command line and error reports</td></tr>
+  <tr><td>STRD</td><td>Struct and union declarations</td></tr>
+</table>
+<img src="smallc99_overlay_table.svg" alt="SMALLC99 overlay table" width="680">
+<p>Overlays never call each other directly. They go through resident trampolines that save the caller, map in the callee, and restore the caller afterwards. The mapper hardware is documented in the <a href="https://github.com/AlexanderAdelAU/TMS99105-SBC-V4-Paged-Memory-System">TMS99105 SBC paged memory system</a> repository.</p>
+
+<h2>Related</h2>
+<ul>
+  <li><a href="https://github.com/AlexanderAdelAU/Small-C-Plus-for-TMS9900-99000">Small C Plus for the TMS9900/99000</a>, an earlier compiler with floating point support.</li>
+  <li><a href="https://github.com/AlexanderAdelAU/Relocating-Assembler-and-Linker-Loader-for-TMS99000">R99 relocating assembler and LINK99 linker</a></li>
+  <li><a href="https://github.com/AlexanderAdelAU/BDOS-FOR-THE-TMS9900">BDOS for the TMS9900</a> and the <a href="https://github.com/AlexanderAdelAU/Small-Shell-for-the-TMS9900">Small Shell</a></li>
+</ul>
+
+<footer>By <a href="https://github.com/AlexanderAdelAU">github.com/AlexanderAdelAU</a></footer>
+</main>
+</body>
+</html>

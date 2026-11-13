@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TMS99105 / TMS9900 Single Board Computer projects – SMALLC99, BDOS, paged memory</title>
+<meta name="description" content="A homebrew TMS99105 (TMS9900 family) single board computer and its software: SMALLC99, a native Small-C compiler with overlays; a 1MB paged memory mapper; BDOS; a shell; and a relocating assembler and linker.">
+<link rel="canonical" href="https://alexanderadelau.github.io/">
+<style>
+  body{font:17px/1.6 Georgia,"Times New Roman",serif;color:#1d1d1b;background:#fbfaf7;margin:0}
+  main{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+  h1{font-size:2rem;line-height:1.2;margin:0 0 .5rem}
+  h2{font-size:1.15rem;margin:0 0 .2rem}
+  a{color:#1a5a8a}
+  .lede{font-size:1.1rem;color:#3a3a36}
+  .card{border-top:1px solid #ddd8cc;padding:1.1rem 0}
+  .card.featured{border-top:3px solid #1a5a8a}
+  .card p{margin:.2rem 0}
+  footer{margin-top:2rem;font-size:.9rem;color:#666}
+</style>
+</head>
+<body>
+<main>
+<h1>TMS99105 Single Board Computer projects</h1>
+<p class="lede">A homebrew single board computer built around the Texas Instruments TMS99105, the last of the TMS9900 family, along with the operating system, tools and compiler that run on it.</p>
+
+<div class="card featured">
+  <h2><a href="/smallc99/">SMALLC99: a native C compiler for the TMS99105</a></h2>
+  <p>A Small-C compiler with structs, unions, multi-dimensional arrays and multi-level pointers that runs on the SBC itself. It fits in 64K by swapping eight overlays through paged memory. <a href="https://github.com/AlexanderAdelAU/SmallC99-TMS99105-Native-C-Compiler">Source on GitHub</a>.</p>
+</div>
+
+<div class="card">
+  <h2><a href="https://github.com/AlexanderAdelAU/TMS99105-SBC">TMS99105 SBC</a></h2>
+  <p>The hardware: schematics, memory structure, disc monitor, and the board's history from an S100 wire-wrap system onwards.</p>
+</div>
+
+<div class="card">
+  <h2><a href="https://github.com/AlexanderAdelAU/TMS99105-SBC-V4-Paged-Memory-System">Transparent paged memory system</a></h2>
+  <p>A memory mapper giving the TMS99105 access to 1MB of RAM through sixteen 4K segments, with an overlay manager.</p>
+</div>
+
+<div class="card">
+  <h2><a href="https://github.com/AlexanderAdelAU/BDOS-FOR-THE-TMS9900">BDOS for the TMS9900</a></h2>
+  <p>A small disk operating system with CP/M-style interfaces and folder support, written for the paged SBC.</p>
+</div>
+
+<div class="card">
+  <h2><a href="https://github.com/AlexanderAdelAU/Small-Shell-for-the-TMS9900">Small Shell</a></h2>
+  <p>The command interpreter that runs .COM, .EXE and procedure files on top of BDOS.</p>
+</div>
+
+<div class="card">
+  <h2><a href="https://github.com/AlexanderAdelAU/Relocating-Assembler-and-Linker-Loader-for-TMS99000">R99 assembler and LINK99 linker</a></h2>
+  <p>A relocating assembler and linker for the TMS9900/99000, producing flat and paged overlay binaries.</p>
+</div>
+
+<div class="card">
+  <h2><a href="https://github.com/AlexanderAdelAU/Small-C-Plus-for-TMS9900-99000">Small C Plus for the TMS9900/99000</a></h2>
+  <p>A Small C Plus compiler for the TMS9900 with floating point, structures and unsigned types.</p>
+</div>
+
+<footer><a href="https://github.com/AlexanderAdelAU">github.com/AlexanderAdelAU</a></footer>
+</main>
+</body>
+</html>
