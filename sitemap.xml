@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://alexanderadelau.github.io/</loc><lastmod>2026-11-26</lastmod></url>
   <url><loc>https://alexanderadelau.github.io/SmallC99-TMS99105-Native-C-Compiler/</loc></url>
+  <url><loc>https://alexanderadelau.github.io/TMS99105-SBC/</loc></url>
+  <url><loc>https://alexanderadelau.github.io/TMS99105-SBC-V4-Paged-Memory-System/</loc></url>
+  <url><loc>https://alexanderadelau.github.io/TMS99105-Native-Toolchain/</loc></url>
+  <url><loc>https://alexanderadelau.github.io/Small-C-Plus-for-TMS9900-99000/</loc></url>
   <url><loc>https://alexanderadelau.github.io/Rule-Propagated-Service-Orchestration/</loc><lastmod>2026-11-26</lastmod></url>
   <url><loc>https://alexanderadelau.github.io/Rule-Propagated-Service-Orchestration/docs/replay/examples.html</loc></url>
 </urlset>
